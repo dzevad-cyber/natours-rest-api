@@ -5,7 +5,7 @@ import app from './app.js';
 
 dotenv.config({ path: './config.env' });
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   console.log('UNHANDLED REJECTION! SHUTTING DOWN!!!');
   console.log(err.name, err.message);
   console.log(err.stack);
@@ -32,7 +32,7 @@ const server = app.listen(port, () =>
   console.log(`Server started on port ${port}`)
 );
 
-process.on('unhandledRejection', (err) => {
+process.on('unhandledRejection', err => {
   console.log('UNHANDLED REJECTION! SHUTTING DOWN!!!');
   console.log(err.name, err.message);
   console.log(err.stack);
