@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
@@ -8,10 +9,13 @@ import hpp from 'hpp';
 import rateLimit from 'express-rate-limit';
 import xss from 'xss-clean';
 
+dotenv.config({ path: './config.env' });
+
 import globalErrorHandler from './utils/globalErrorHandler.js';
 import AppErr from './utils/appError.js';
 
-import userRoutes from './routes/userRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import reviewRouter from './routes/reviewRoutes.js';
 
 const app = express();
 
@@ -33,7 +37,8 @@ app.use('/api', limiter);
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 // ---------- ROUTES --------------
-app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 // ---------- ROUTES END ----------
 
 if (process.env.NODE_ENV === 'production') {

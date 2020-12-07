@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "concurrently \"redis-server\" \"nodemon server.js\""
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
     "prettier": "^2.2.0"
   },
   "dependencies": {
+    "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -33,6 +34,7 @@
     "hpp": "^0.2.3",
     "mongoose": "^5.10.16",
     "morgan": "^1.10.0",
+    "redis": "^3.0.2",
     "validator": "^13.1.17",
     "xss-clean": "^0.1.1"
   }

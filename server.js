@@ -1,9 +1,6 @@
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
 import app from './app.js';
-
-dotenv.config({ path: './config.env' });
 
 process.on('uncaughtException', err => {
   console.log('UNHANDLED REJECTION! SHUTTING DOWN!!!');
