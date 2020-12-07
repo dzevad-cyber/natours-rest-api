@@ -2,8 +2,7 @@ import mongoose from 'mongoose';
 import redis from 'redis';
 import util from 'util';
 
-const redisURL = 'redis://127.0.0.1:6379';
-const client = redis.createClient(redisURL);
+const client = redis.createClient(process.env.REDIS_URL);
 
 client.hget = util.promisify(client.hget);
 

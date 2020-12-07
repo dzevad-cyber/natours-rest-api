@@ -1,5 +1,6 @@
 import catchAsync from './catchAsync.js';
 import AppError from './appError.js';
+import ApiFeatures from './apiFeatures.js';
 
 export const createOne = Model =>
   catchAsync(async (req, res, next) => {
@@ -36,10 +37,14 @@ export const updateOne = Model =>
     });
   });
 
-export const getOne = Model =>
+export const getOne = (Model, populateOpt) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findById(req.params.id);
+    let query = Model.findById(req.params.id);
+    if (populateOpt) query = query.populate(populateOpt);
+    console.log(query);
+    const doc = await query;
 
+    console.log(doc);
     if (!doc) return next(new AppError(`${Model.modelName} not found.`, 404));
 
     res.status(200).json({
@@ -50,7 +55,18 @@ export const getOne = Model =>
 
 export const getAll = Model =>
   catchAsync(async (req, res, next) => {
-    const docs = await Model.find();
+    let filter = {};
+    if (req.params.tourId) filter = { tour: req.params.tourId };
+
+    const features = new ApiFeatures(Model.find(filter), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+
+    const docs = await features.query;
+
+    if (!docs) return next(new AppError('Bad request.', 400));
 
     res.status(200).json({
       status: 'success',

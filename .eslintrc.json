@@ -10,9 +10,13 @@
     "no-return-await": "off",
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",
-    "no-unused-vars": ["error", { "argsIgnorePattern": "req|resnext|val" }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }],
     "prefer-destructuring": "off",
-    "class-methods-use-this": "warn",
-    "import/extensions": "always"
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "import/no-named-as-default": "off",
+    "import/no-named-as-default-member": "off",
+    "class-methods-use-this": "off",
+    "no-unneeded-ternary": "off"
   }
 }

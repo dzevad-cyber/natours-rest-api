@@ -37,7 +37,7 @@ const devErrHandler = (err, res) => {
   });
 };
 
-const prodErrorHandler = (err, res) => {
+const prodErrHandler = (err, res) => {
   if (err.isOperational) {
     if (err.errors) {
       return res.status(err.statusCode).json({
@@ -74,6 +74,6 @@ export default (err, req, res, next) => {
     if (err.name === 'JsonWebTokenError') _err = jwtErrHandler();
     if (err.name === 'TokenExpiredError') _err = jwtExpiredErrHandler();
 
-    prodErrorHandler(_err, res);
+    prodErrHandler(_err, res);
   }
 };

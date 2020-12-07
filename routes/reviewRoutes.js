@@ -1,21 +1,29 @@
 import express from 'express';
-import clearCache from '../middlewares/clearCache.js';
-
-const router = express.Router();
 
 import * as reviewController from '../controllers/reviewController.js';
+import * as authMiddleware from '../middlewares/authMiddleware.js';
+import * as reviewMiddleware from '../middlewares/reviewMiddleware.js';
+
+const router = express.Router({ mergeParams: true });
 
 router
   .route('/')
-  .post(clearCache, reviewController.createReview)
-  .get(reviewController.getAllReviews);
+  .post(
+    authMiddleware.protect,
+    authMiddleware.restrictTo('user'),
+    reviewMiddleware.setTourUserIds,
+    reviewController.createReview
+  )
+  .get(
+    authMiddleware.protect,
+    authMiddleware.restrictTo('user'),
+    reviewController.getAllReviews
+  );
 
 router
   .route('/:id')
   .get(reviewController.getReview)
   .delete(reviewController.deleteReview)
   .patch(reviewController.updateReview);
-
-router.route('/users/:id').get(reviewController.getReviewsByUser);
 
 export default router;
