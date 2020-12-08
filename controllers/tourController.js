@@ -1,6 +1,6 @@
 import * as factory from '../utils/handlerFactory.js';
 import catchAsync from '../utils/catchAsync.js';
-// import AppError from '../utils/appError.js';
+import AppError from '../utils/appError.js';
 
 import Tour from '../models/tourModel.js';
 
@@ -65,5 +65,26 @@ export const getMonthlyPlan = catchAsync(async (req, res, next) => {
     status: 'success',
     result: plan.length,
     data: { plan },
+  });
+});
+
+// /tours-within/:distance/center/:latlng/unit/:unit
+export const getToursWithin = catchAsync(async (req, res, next) => {
+  console.log('hello world');
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
+
+  if (!lat || !lng) return next(new AppError('No lat or lng specified.', 400));
+
+  const tours = await Tour.find({
+    startLocation: { $geoWithin: { $centerSphere: [[lat, lng], radius] } },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    result: tours.length,
+    data: { tours },
   });
 });

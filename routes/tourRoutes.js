@@ -18,6 +18,10 @@ router.route('/get-stats').get(tourController.getTourStats);
 router.route('/').get(tourController.getAllTours);
 router.route('/:id').get(tourController.getTour);
 
+router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(tourController.getToursWithin);
+
 router.use(
   authMiddleware.protect,
   authMiddleware.restrictTo('admin', 'lead-guide')
